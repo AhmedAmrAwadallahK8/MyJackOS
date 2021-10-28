@@ -59,5 +59,14 @@ class Math {
 
     /** Returns the smaller number. */
     function int min(int a, int b) {
+        if(a>b){
+            return b
+        }
+        if(b>a){
+            return a
+        }
+        if(a=b){
+            return a
+        }
     }
 }
