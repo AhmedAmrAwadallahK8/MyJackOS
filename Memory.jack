@@ -9,11 +9,15 @@
  * consists of 32,768 words, each holding a 16-bit binary number.
  */ 
 class Memory {
-    static Array ram;
+    static Array ram, heap, freeList;
 
     /** Initializes the class. */
     function void init() {
         let ram = 0;
+        let heap = 2048;
+        let freeList = 2048;
+        let heap[0] = 0;
+        let heap[1] = 14335;
     }
 
     /** Returns the RAM value at the given address. */
@@ -35,5 +39,6 @@ class Memory {
     /** De-allocates the given object (cast as an array) by making
      *  it available for future allocations. */
     function void deAlloc(Array o) {
+
     }    
 }
