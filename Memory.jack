@@ -34,6 +34,35 @@ class Memory {
     /** Finds an available RAM block of the given size and returns
      *  a reference to its base address. */
     function int alloc(int size) {
+        var Array currentArray;
+        var Boolean memAdded;
+        var int currentArraySize, memoryPointer;
+        let memAllocated = false;
+        let currentArray = heap;
+        let currentArraySize = currentArray[1]
+        let sizeNeeded = size + 2;
+        //Loop through as long as memory hasn't been allocated
+        while(~memAllocated){
+            //Current Memory Fragment has room
+            if(currentArraySize > sizeNeeded){
+                let memoryPointer = currentArraySize - sizeNeeded + 1;
+                let currentArray[1] = currentArray[1] - sizeNeeded
+                let memAllocated = true;
+                return memoryPointer;
+            }
+            //Current Memory Fragment does not have room
+            if(currentArraySize < sizeNeeded){
+                //Current Memory Fragment is the last available memory fragment. Either DFrag or halt the computer
+                if(currentArray[0] = 0){
+                    do Sys.error(999);
+                }
+                //Move to the next available memory fragment
+                else{
+                    let currentArray = currentArray[0]
+                }
+            }
+        }
+
     }
 
     /** De-allocates the given object (cast as an array) by making
