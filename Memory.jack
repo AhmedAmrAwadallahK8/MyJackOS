@@ -18,6 +18,7 @@ class Memory {
         let freeList = 2048;
         let heap[0] = 0;
         let heap[1] = 14335;
+        return;
     }
 
     /** Returns the RAM value at the given address. */
@@ -35,11 +36,11 @@ class Memory {
      *  a reference to its base address. */
     function int alloc(int size) {
         var Array currentArray;
-        var Boolean memAdded;
-        var int currentArraySize, memoryPointer;
+        var Boolean memAllocated;
+        var int currentArraySize, memoryPointer, sizeNeeded;
         let memAllocated = false;
         let currentArray = heap;
-        let currentArraySize = currentArray[1]
+        let currentArraySize = currentArray[1];
         let sizeNeeded = size + 2;
         //Loop through as long as memory hasn't been allocated
         while(~memAllocated){
@@ -59,9 +60,11 @@ class Memory {
                 //Move to the next available memory fragment
                 else{
                     let currentArray = currentArray[0]
+                    let currentArraySize = currentArray[1]
                 }
             }
         }
+        return;
 
     }
 
