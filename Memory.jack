@@ -39,6 +39,20 @@ class Memory {
     /** De-allocates the given object (cast as an array) by making
      *  it available for future allocations. */
     function void deAlloc(Array o) {
+        var Array currentArray;
+        var Boolean memAdded;
+        let memAdded = false;
+        let currentArray = heap;
+        while(~memAdded){
+            if(currentArray[0] = 0){
+                let currentArray[0] = o;
+                let memAdded = true;
+            }
+            else{
+                let currentArray = currentArray[0];
+            }
+        }
+        return;
 
     }    
 }
