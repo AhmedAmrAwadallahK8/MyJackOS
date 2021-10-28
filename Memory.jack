@@ -20,12 +20,12 @@ class Memory {
         let heap[1] = 14335;
         return;
     }
-
+    
     /** Returns the RAM value at the given address. */
     function int peek(int address) {
         return ram[address];
     }
-
+    
     /** Sets the RAM value at the given address to the given value. */
     function void poke(int address, int value) {
         let ram[address] = value;
@@ -49,13 +49,12 @@ class Memory {
                 let memoryPointer = currentArraySize - sizeNeeded + 1;
                 let currentArray[1] = currentArray[1] - sizeNeeded
                 let memAllocated = true;
-                return memoryPointer;
             }
             //Current Memory Fragment does not have room
             if(currentArraySize < sizeNeeded){
                 //Current Memory Fragment is the last available memory fragment. Either DFrag or halt the computer
                 if(currentArray[0] = 0){
-                    do Sys.error(999);
+                    let memAllocated = true; //Change later to do Sys.error(999)
                 }
                 //Move to the next available memory fragment
                 else{
@@ -64,10 +63,10 @@ class Memory {
                 }
             }
         }
-        return;
+        return memoryPointer;
 
     }
-
+    
     /** De-allocates the given object (cast as an array) by making
      *  it available for future allocations. */
     function void deAlloc(Array o) {
@@ -86,5 +85,6 @@ class Memory {
         }
         return;
 
-    }    
+    } 
+      
 }
