@@ -37,36 +37,48 @@ class Memory {
     function int alloc(int size) {
         var Array currentArray;
         var Boolean memAllocated;
-        var int currentArraySize, memoryPointer, sizeNeeded;
+        var int currentMemFragSize, memoryPointer, sizeNeeded, memFragPointer;
         let memAllocated = false;
-        let currentArray = freeList;
+        //let currentArray = freeList;
+        let memFragPointer = freeList-heap;
         let sizeNeeded = size + 2;
         
         //Loop through as long as memory hasn't been allocated
         while(~memAllocated){
             
-            let currentArraySize = currentArray[1];
+            let currentMemFragSize = heap[memFragPointer+1];
             //Current Memory Fragment has room
             
-            if(currentArraySize > (sizeNeeded-1)){
-                let currentArray[1] = currentArray[1] - sizeNeeded;
-                //let currentArray[currentArraySize - sizeNeeded + 2] = 0;
-                let currentArray[currentArraySize - sizeNeeded + 3] = size;
-                let memoryPointer = currentArraySize - sizeNeeded + 4;
+            if(currentMemFragSize > (sizeNeeded-1)){
+                
+                //Remove a fragment of memory that is equal to the size needed and initialize its overhead
+                //This register will be used when this segment becomes deallocated, for now set to 0
+                let heap[memFragPointer + 2 + currentMemFragSize - sizeNeeded] = 0;
+                //This register is used to show how much space we have left in this memory segment, this is used for memory allocation
+                let heap[memFragPointer + 3 + currentMemFragSize - sizeNeeded] = size;
+                //This value points to the origin memory address for the new allocated object
+                let memoryPointer = memFragPointer + 4 + currentMemFragSize - sizeNeeded;
+                //Set size of current memFragPointer to be reduced by the size needed by the new memory fragment
+                let heap[memFragPointer + 1] = heap[memFragPointer + 1] - sizeNeeded;
+
+                /**let currentArray[1] = currentArray[1] - sizeNeeded;
+                //let currentArray[currentMemFragSize - sizeNeeded + 2] = 0;
+                let currentArray[currentMemFragSize - sizeNeeded + 3] = size;
+                let memoryPointer = currentMemFragSize - sizeNeeded + 4;*/
                 
                 let memAllocated = true;
                 
             }
 
             //Current Memory Fragment does not have room
-            if(currentArraySize < sizeNeeded){
+            if(currentMemFragSize < sizeNeeded){
                 //Current Memory Fragment is the last available memory fragment. Either DFrag or halt the computer
-                if(currentArray[0] = 0){
+                if(heap[memFragPointer] = 0){
                     do Sys.error(999); //Change later to do Sys.error(999)
                 }
                 //Move to the next available memory fragment
                 else{
-                    let currentArray = currentArray[0];
+                    let memFragPointer = heap[memFragPointer];
                 }
             }
         }
@@ -79,15 +91,17 @@ class Memory {
     function void deAlloc(Array o) {
         var Array currentArray;
         var Boolean memAdded;
+        var int memFragPointer;
         let memAdded = false;
-        let currentArray = freeList;
+        //let currentArray = freeList;
+        let memFragPointer = freeList-heap;
         while(~memAdded){
-            if(currentArray[0] = 0){
-                let currentArray[0] = o-2;
+            if(heap[memFragPointer] = 0){
+                let heap[memFragPointer] = o-2;
                 let memAdded = true;
             }
             else{
-                let currentArray = currentArray[0];
+                let memFragPointer = heap[memFragPointer];
             }
         }
         return;
