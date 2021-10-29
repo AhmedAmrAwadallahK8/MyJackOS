@@ -63,8 +63,30 @@ class Math {
         }
     }
 
+    function int pow(int x, int e){
+        var int out;
+        let out = x;
+        while(e > 1){
+            let out = out * x;
+            let e = e - 1;
+        }
+        return out;
+    }
+
     /** Returns the integer part of the square root of x. */
     function int sqrt(int x) {
+        var int j, n, y;
+        let y = 0;
+        let n = 8;
+        let j = 4;
+        while(pow(2,n)-1>0){
+            if((y+pow(2,j))*(y+pow(2,j)) < x + 1){
+                let y = y + pow(2,j)
+            }
+            let j = j - 1;
+            let n = 2*j;
+        }
+        return y;
     }
 
     /** Returns the greater number. */
