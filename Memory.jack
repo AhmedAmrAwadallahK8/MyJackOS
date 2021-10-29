@@ -39,27 +39,34 @@ class Memory {
         var Boolean memAllocated;
         var int currentArraySize, memoryPointer, sizeNeeded;
         let memAllocated = false;
-        let currentArray = heap;
-        let currentArraySize = currentArray[1];
+        let currentArray = freeList;
         let sizeNeeded = size + 2;
+        
         //Loop through as long as memory hasn't been allocated
         while(~memAllocated){
+            
+            let currentArraySize = currentArray[1];
             //Current Memory Fragment has room
-            if(currentArraySize > sizeNeeded){
-                let memoryPointer = currentArraySize - sizeNeeded + 1;
-                let currentArray[1] = currentArray[1] - sizeNeeded
+            
+            if(currentArraySize > (sizeNeeded-1)){
+                let currentArray[1] = currentArray[1] - sizeNeeded;
+                //let currentArray[currentArraySize - sizeNeeded + 2] = 0;
+                let currentArray[currentArraySize - sizeNeeded + 3] = size;
+                let memoryPointer = currentArraySize - sizeNeeded + 4;
+                
                 let memAllocated = true;
+                
             }
+
             //Current Memory Fragment does not have room
             if(currentArraySize < sizeNeeded){
                 //Current Memory Fragment is the last available memory fragment. Either DFrag or halt the computer
                 if(currentArray[0] = 0){
-                    let memAllocated = true; //Change later to do Sys.error(999)
+                    do Sys.error(999); //Change later to do Sys.error(999)
                 }
                 //Move to the next available memory fragment
                 else{
-                    let currentArray = currentArray[0]
-                    let currentArraySize = currentArray[1]
+                    let currentArray = currentArray[0];
                 }
             }
         }
@@ -73,10 +80,10 @@ class Memory {
         var Array currentArray;
         var Boolean memAdded;
         let memAdded = false;
-        let currentArray = heap;
+        let currentArray = freeList;
         while(~memAdded){
             if(currentArray[0] = 0){
-                let currentArray[0] = o;
+                let currentArray[0] = o-2;
                 let memAdded = true;
             }
             else{
