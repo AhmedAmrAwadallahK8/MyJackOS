@@ -29,17 +29,20 @@ class Math {
      *  the Jack expressions x*y and multiply(x,y) return the same value.
      */
     function int multiply(int x, int y) {
-        var int sum, shiftedX, i, reg_size, y_bit;
+        var int sum, shiftedX, i, bits, y_bit, nBit;
         let sum = 0;
+        let nBit = 1;
         let shiftedX = x;
         let i = 0;
-        let reg_size = 16;
-        let y_bit = 0;
-        while(i < reg_size){
+        let bits = 16;
+        
+        while(i < bits){
+            let y_bit = y & nBit;
             if(y_bit = 1) {
                 sum = sum + shiftedX
             }
             let shiftedX = shiftedX + shiftedX;
+            let nBit = nBit + nBit;
         }
         return sum;
     }
@@ -50,6 +53,14 @@ class Math {
      *  the Jack expressions x/y and divide(x,y) return the same value.
      */
     function int divide(int x, int y) {
+        if(y > x){return 0; }
+        q = divide(x, y+y);
+        if((x - (2*q*y))<y){
+            return q + q;
+        }
+        else{
+            return q + q + 1;
+        }
     }
 
     /** Returns the integer part of the square root of x. */
