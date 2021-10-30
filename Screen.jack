@@ -42,7 +42,7 @@ class Screen {
         //Find register containing the pixel
         let addr = 32*y + x/16;
         //Retrieve register
-        let val = Memory.peek[16384+addr];
+        let val = Memory.peek(16384+addr);
         //Find bit in register to operate on
         // a % b = a - (b * int(a/b)) Modulus Math Expression
         let bit_num = x - (16*(x/16));
@@ -77,16 +77,16 @@ class Screen {
         //Vertical Line
         if(dx = 0){
             while((b<dy) | (b=dy)){
-                if(dy > 0){do drawPixel(x, y+b); }  // Go South
-                else{do drawPixel(x, y-b); }  // Go North
+                if(dy > 0){do Screen.drawPixel(x1, y1+b); }  // Go South
+                else{do Screen.drawPixel(x1, y1-b); }  // Go North
                 let b = b + 1;
             }
         }
         //Horizontal Line
         if(dy = 0){
             while((a<dx) | (a=dx)){
-                if(dx > 0){do drawPixel(x+a, y); }  // Go East
-                else{do drawPixel(x-a, y); }  // Go West
+                if(dx > 0){do Screen.drawPixel(x1+a, y1); }  // Go East
+                else{do Screen.drawPixel(x1-a, y1); }  // Go West
                 let a = a + 1;
             }
         }
@@ -94,12 +94,12 @@ class Screen {
         if(~(dy = 0) & ~(dx = 0)){
             while(((a<dx) | (a=dx)) & ((b<dy) | (b=dy))){
                 if(dx > 0){  // Go BLANKEast
-                    if (dy > 0){do drawPixel(x+a, y+b); }  // SouthEast
-                    else{do drawPixel(x+a, y-b); }  // NorthEast
+                    if (dy > 0){do Screen.drawPixel(x1+a, y1+b); }  // SouthEast
+                    else{do Screen.drawPixel(x1+a, y1-b); }  // NorthEast
                 }
                 else{  // Go BLANKWest
-                    if (dy > 0){do drawPixel(x-a, y+b); } // SouthWest
-                    else{do drawPixel(x-a, y-b);}  // NorthWest
+                    if (dy > 0){do Screen.drawPixel(x1-a, y1+b); } // SouthWest
+                    else{do Screen.drawPixel(x1-a, y1-b);}  // NorthWest
                 }
                 if(diff<0){
                     let a = a+1;
@@ -118,13 +118,13 @@ class Screen {
     /** Draws a filled rectangle whose top left corner is (x1, y1)
      * and bottom right corner is (x2,y2), using the current color. */
     function void drawRectangle(int x1, int y1, int x2, int y2) {
-        var int dx, dy, a;
+        var int dx, dy, b;
         let dx = x2-x1;
         let dy = y2-y1;
         let b = 0;
         while((b<dy) | (b=dy)){
-                if(dy > 0){do drawLine(x1, y1+b, x2, y1+b); }  // Draw lines from North to South
-                else{do drawLine(x1, y1-b, x2, y1-b); }  // Draw lines from South to North
+                if(dy > 0){do Screen.drawLine(x1, y1+b, x2, y1+b); }  // Draw lines from North to South
+                else{do Screen.drawLine(x1, y1-b, x2, y1-b); }  // Draw lines from South to North
                 let b = b + 1;
         }
         return;
@@ -132,5 +132,6 @@ class Screen {
 
     /** Draws a filled circle of radius r<=181 around (x,y), using the current color. */
     function void drawCircle(int x, int y, int r) {
+        return;
     }
 }
