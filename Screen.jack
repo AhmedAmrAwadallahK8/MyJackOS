@@ -11,10 +11,12 @@
  */
 class Screen {
     static Boolean color;
+    
 
     //Screen goes from register 16384 to 24575. Screen resolution is 256x512
     /** Initializes the Screen. */
     function void init() {
+        let color = true;
         return;
     }
 
@@ -40,9 +42,9 @@ class Screen {
     function void drawPixel(int x, int y) {
         var int addr, val, bit_num, i, bit;
         //Find register containing the pixel
-        let addr = 32*y + x/16;
+        let addr = 16384 + (32*y) + (x/16);
         //Retrieve register
-        let val = Memory.peek(16384+addr);
+        if((addr < 24576) & (addr > 16383)){let val = Memory.peek(addr); }
         //Find bit in register to operate on
         // a % b = a - (b * int(a/b)) Modulus Math Expression
         let bit_num = x - (16*(x/16));
@@ -62,37 +64,45 @@ class Screen {
             let val = val | bit; // 16 bit Or (In not space)
             let val = ~val;  // 16 bit Not
         }
-        do Memory.poke(addr, val);
+        if((addr < 24576) & (addr > 16383)){do Memory.poke(addr, val); }
         return;
     }
 
     /** Draws a line from pixel (x1,y1) to pixel (x2,y2), using the current color. */
     function void drawLine(int x1, int y1, int x2, int y2) {
-        var int dx, dy, a, b, diff;
+        var int dx, dy, dxAbs, dyAbs, a, b, diff;
+        var boolean pathChosen;
         let dx = x2-x1;
         let dy = y2-y1;
+        let dxAbs = dx;
+        let dyAbs = dy;
+        if(dxAbs < 0){let dxAbs = -dxAbs; }
+        if(dyAbs < 0){let dyAbs = -dyAbs; }
         let a = 0;
         let b = 0;
         let diff = 0;
         //Vertical Line
         if(dx = 0){
-            while((b<dy) | (b=dy)){
+            while((b<dyAbs) | (b=dyAbs)){
                 if(dy > 0){do Screen.drawPixel(x1, y1+b); }  // Go South
                 else{do Screen.drawPixel(x1, y1-b); }  // Go North
                 let b = b + 1;
             }
+            return;
         }
         //Horizontal Line
         if(dy = 0){
-            while((a<dx) | (a=dx)){
+            while((a<dxAbs) | (a=dxAbs)){
                 if(dx > 0){do Screen.drawPixel(x1+a, y1); }  // Go East
                 else{do Screen.drawPixel(x1-a, y1); }  // Go West
                 let a = a + 1;
             }
+            return;
         }
         //Sloped Line
         if(~(dy = 0) & ~(dx = 0)){
-            while(((a<dx) | (a=dx)) & ((b<dy) | (b=dy))){
+            while(((a<dxAbs) | (a=dxAbs)) & ((b<dyAbs) | (b=dyAbs))){
+                let pathChosen = false;
                 if(dx > 0){  // Go BLANKEast
                     if (dy > 0){do Screen.drawPixel(x1+a, y1+b); }  // SouthEast
                     else{do Screen.drawPixel(x1+a, y1-b); }  // NorthEast
@@ -101,15 +111,29 @@ class Screen {
                     if (dy > 0){do Screen.drawPixel(x1-a, y1+b); } // SouthWest
                     else{do Screen.drawPixel(x1-a, y1-b);}  // NorthWest
                 }
-                if(diff<0){
+                if((diff<0) & (dy>0) & ~pathChosen){
+                    let pathChosen = true;
                     let a = a+1;
                     let diff = diff + dy;
                 }
-                else{
+                if((diff<0) & (dy<0) & ~pathChosen){
+                    let pathChosen = true;
+                    let a = a+1;
+                    let diff = diff - dy;  
+                }
+
+                if((diff>-1) & (dx>0) & ~pathChosen){
+                    let pathChosen = true;
                     let b = b + 1;
                     let diff = diff - dx;
                 }
+                if((diff>-1) & (dx<0) & ~pathChosen){
+                    let pathChosen = true;
+                    let b = b + 1;
+                    let diff = diff + dx;
+                }
             }
+            return;
         }
 
         return;
