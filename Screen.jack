@@ -118,10 +118,16 @@ class Screen {
     /** Draws a filled rectangle whose top left corner is (x1, y1)
      * and bottom right corner is (x2,y2), using the current color. */
     function void drawRectangle(int x1, int y1, int x2, int y2) {
-        var int dx, dy;
+        var int dx, dy, a;
         let dx = x2-x1;
         let dy = y2-y1;
-
+        let b = 0;
+        while((b<dy) | (b=dy)){
+                if(dy > 0){do drawLine(x1, y1+b, x2, y1+b); }  // Draw lines from North to South
+                else{do drawLine(x1, y1-b, x2, y1-b); }  // Draw lines from South to North
+                let b = b + 1;
+        }
+        return;
     }
 
     /** Draws a filled circle of radius r<=181 around (x,y), using the current color. */
