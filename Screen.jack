@@ -13,20 +13,22 @@ class Screen {
     static Boolean color;
     
 
-    //Screen goes from register 16384 to 24575. Screen resolution is 256x512
+    
     /** Initializes the Screen. */
     function void init() {
         let color = true;
         return;
     }
 
+    
     /** Erases the entire screen. */
     function void clearScreen() {
         var int addr;
+        // Screen goes from register 16384 to 24575. Screen resolution is 256x512
         let addr = 16384;
         while(addr < 24576){
-            do Memory.poke(addr, 0);
-            let addr = addr + 1;
+            do Memory.poke(addr, 0);  // Set the register to be all 0, wipes 16 bits of the screen
+            let addr = addr + 1;   // Go to the next register
         }
         return;
     }
@@ -45,7 +47,8 @@ class Screen {
         let addr = 16384 + (32*y) + (x/16);
         //Retrieve register
         if((addr < 24576) & (addr > 16383)){let val = Memory.peek(addr); }
-        //Find bit in register to operate on
+        else{return; }  // If the listed pixel is not actually within the screen in Memory leave.
+        // Find bit in register to operate on
         // a % b = a - (b * int(a/b)) Modulus Math Expression
         let bit_num = x - (16*(x/16));
         //Using bit_num create a 16 bit version of this bit
@@ -64,7 +67,8 @@ class Screen {
             let val = val | bit; // 16 bit Or (In not space)
             let val = ~val;  // 16 bit Not
         }
-        if((addr < 24576) & (addr > 16383)){do Memory.poke(addr, val); }
+        // Change the register in memory with the newly drawn pixel
+        do Memory.poke(addr, val);
         return;
     }
 
@@ -111,22 +115,28 @@ class Screen {
                     if (dy > 0){do Screen.drawPixel(x1-a, y1+b); } // SouthWest
                     else{do Screen.drawPixel(x1-a, y1-b);}  // NorthWest
                 }
+                // Need to go South 1 pixel
                 if((diff<0) & (dy>0) & ~pathChosen){
                     let pathChosen = true;
                     let a = a+1;
                     let diff = diff + dy;
                 }
+
+                // Need to go North 1 pixel
                 if((diff<0) & (dy<0) & ~pathChosen){
                     let pathChosen = true;
                     let a = a+1;
                     let diff = diff - dy;  
                 }
 
+                // Need to go East 1 pixel
                 if((diff>-1) & (dx>0) & ~pathChosen){
                     let pathChosen = true;
                     let b = b + 1;
                     let diff = diff - dx;
                 }
+
+                // Need to go West 1 pixel
                 if((diff>-1) & (dx<0) & ~pathChosen){
                     let pathChosen = true;
                     let b = b + 1;
@@ -157,6 +167,7 @@ class Screen {
     /** Draws a filled circle of radius r<=181 around (x,y), using the current color. */
     function void drawCircle(int x, int y, int r) {
         var int rSquare, dy, dist;
+        if(r > 181){return; }  // If r is greater than 181 overflow will occur, leave and don't execute this call to drawCircle
         let dy = r;
         let rSquare = r*r;
         while(dy > -r){
