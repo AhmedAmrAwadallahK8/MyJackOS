@@ -15,6 +15,7 @@ class Screen {
     //Screen goes from register 16384 to 24575. Screen resolution is 256x512
     /** Initializes the Screen. */
     function void init() {
+        return;
     }
 
     /** Erases the entire screen. */
@@ -90,26 +91,28 @@ class Screen {
             }
         }
         //Sloped Line
-        while(((a<dx) | (a=dx)) & ((b<dy) | (b=dy))){
-            if(dx > 0){  // Go BLANKEast
-                if (dy > 0){do drawPixel(x+a, y+b); }  // SouthEast
-                else{do drawPixel(x+a, y-b); }  // NorthEast
-            }
-            else{  // Go BLANKWest
-                if (dy > 0){do drawPixel(x-a, y+b); } // SouthWest
-                else{do drawPixel(x-a, y-b);}  // NorthWest
-            }
-            if(diff<0){
-                let a = a+1;
-                let diff = diff + dy;
-            }
-            else{
-                let b = b + 1;
-                let diff = diff - dx;
+        if(~(dy = 0) & ~(dx = 0)){
+            while(((a<dx) | (a=dx)) & ((b<dy) | (b=dy))){
+                if(dx > 0){  // Go BLANKEast
+                    if (dy > 0){do drawPixel(x+a, y+b); }  // SouthEast
+                    else{do drawPixel(x+a, y-b); }  // NorthEast
+                }
+                else{  // Go BLANKWest
+                    if (dy > 0){do drawPixel(x-a, y+b); } // SouthWest
+                    else{do drawPixel(x-a, y-b);}  // NorthWest
+                }
+                if(diff<0){
+                    let a = a+1;
+                    let diff = diff + dy;
+                }
+                else{
+                    let b = b + 1;
+                    let diff = diff - dx;
+                }
             }
         }
 
-
+        return;
     }
 
     /** Draws a filled rectangle whose top left corner is (x1, y1)
@@ -118,6 +121,7 @@ class Screen {
         var int dx, dy;
         let dx = x2-x1;
         let dy = y2-y1;
+
     }
 
     /** Draws a filled circle of radius r<=181 around (x,y), using the current color. */
