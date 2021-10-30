@@ -11,14 +11,21 @@
  * string-oriented operations.
  */
 class String {
-
+    field int currentL;
+    field int maxL;
     /** constructs a new empty string with a maximum length of maxLength
      *  and initial length of 0. */
     constructor String new(int maxLength) {
+        let maxL = maxLength;
+        let currentL = 0;
+        return;
+
     }
 
     /** Disposes this string. */
     method void dispose() {
+        do Memory.deAlloc(this);
+        return;
     }
 
     /** Returns the current length of this string. */
