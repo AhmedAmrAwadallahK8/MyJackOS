@@ -16,7 +16,7 @@ class String {
     /** constructs a new empty string with a maximum length of maxLength
      *  and initial length of 0. */
     constructor String new(int maxLength) {
-        let str = Array.new(maxLength);
+        if(maxLength > 0){let str = Array.new(maxLength); }
         let currentL = 0;
         return this;
     }
@@ -53,41 +53,59 @@ class String {
     /** Erases the last character from this string. */
     method void eraseLastChar() {
         let str[currentL] = 0;
-        let currentL = currentL - 1;
+        if(currentL > 0){let currentL = currentL - 1; }
         return;
     }
 
     // 0 = 48, 1 = 49, 2 = 50, 3 = 51, 4 = 52, 5 = 53, 6 = 54, 7 = 55, 8 = 56, 9 = 57 
     /** Returns the integer value of this string, 
      *  until a non-digit character is detected. */
-    method int intValue() {
-        var int i, val, dig;
+    method int intValue() { //Wrong Value
+        var int i, val, dig, negate;
+        var boolean exit;
+        let exit = false;
         let val = 0;
-        while(i < currentL){
-            let dig = str[i]
-            let val = (val*10 + dig);
-            let i = i + 1;
+        let negate = 1;
+        if(str[i] = 45){let i = 1; let negate = -1; }
+        while((i < currentL) & ~exit){
+            let dig = str[i];
+            if((dig>47) & (dig<58)){
+                let val = (val*10 + dig);
+                let i = i + 1;
+            }
+            else{let exit = true; }
         }
-        return val;
+
+
+        return val*negate;
     }
 
     /** Sets this string to hold a representation of the given value. */
-    method void setInt(int val) {
-        var int lstDig;
+    method void setInt(int val) {//Not working
+        var int lstDig; 
         var char charDig; 
         // a % b = a - (b * int(a/b)) Modulus Math Expression
-        let lstDig = x - (10*(x/10)); //TODO
-        let charDig = lstDig;
+        let lstDig = val - (10*(val/10)); //TODO
+        //let charDig = lstDig;
+        /**if(lstDig = 48){let charDig = 48; }
+        if(lstDig = 49){let charDig = 49; }
+        if(lstDig = 50){let charDig = 50; }
+        if(lstDig = 51){let charDig = 51; }
+        if(lstDig = 52){let charDig = 52; }
+        if(lstDig = 53){let charDig = 53; }
+        if(lstDig = 54){let charDig = 54; }
+        if(lstDig = 55){let charDig = 55; }
+        if(lstDig = 56){let charDig = 56; }
+        if(lstDig = 57){let charDig = 57; }*/
         if (val < 10){
-            do appendChar(charDig);
+            do appendChar(lstDig);
+            return;
         }
         else{
             do setInt(val/10);
-            do appendChar(charDig);
+            do appendChar(lstDig);
+            return;
         }
-
-
-
     }
 
     // new line = 128 
