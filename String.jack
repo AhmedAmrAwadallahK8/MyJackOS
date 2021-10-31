@@ -60,7 +60,7 @@ class String {
     // 0 = 48, 1 = 49, 2 = 50, 3 = 51, 4 = 52, 5 = 53, 6 = 54, 7 = 55, 8 = 56, 9 = 57 
     /** Returns the integer value of this string, 
      *  until a non-digit character is detected. */
-    method int intValue() { //Wrong Value
+    method int intValue() {
         var int i, val, dig, negate;
         var boolean exit;
         let exit = false;
@@ -70,7 +70,17 @@ class String {
         while((i < currentL) & ~exit){
             let dig = str[i];
             if((dig>47) & (dig<58)){
-                let val = (val*10 + dig);
+                if(dig = 48){let dig = 0; }
+                if(dig = 49){let dig = 1; }
+                if(dig = 50){let dig = 2; }
+                if(dig = 51){let dig = 3; }
+                if(dig = 52){let dig = 4; }
+                if(dig = 53){let dig = 5; }
+                if(dig = 54){let dig = 6; }
+                if(dig = 55){let dig = 7; }
+                if(dig = 56){let dig = 8; }
+                if(dig = 57){let dig = 9; }
+                let val = (val*10) + dig;
                 let i = i + 1;
             }
             else{let exit = true; }
