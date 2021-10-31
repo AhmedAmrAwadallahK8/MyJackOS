@@ -61,10 +61,33 @@ class String {
     /** Returns the integer value of this string, 
      *  until a non-digit character is detected. */
     method int intValue() {
+        var int i, val, dig;
+        let val = 0;
+        while(i < currentL){
+            let dig = str[i]
+            let val = (val*10 + dig);
+            let i = i + 1;
+        }
+        return val;
     }
 
     /** Sets this string to hold a representation of the given value. */
     method void setInt(int val) {
+        var int lstDig;
+        var char charDig; 
+        // a % b = a - (b * int(a/b)) Modulus Math Expression
+        let lstDig = x - (10*(x/10)); //TODO
+        let charDig = lstDig;
+        if (val < 10){
+            do appendChar(charDig);
+        }
+        else{
+            do setInt(val/10);
+            do appendChar(charDig);
+        }
+
+
+
     }
 
     // new line = 128 
