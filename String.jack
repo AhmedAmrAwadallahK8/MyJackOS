@@ -92,28 +92,30 @@ class String {
 
     /** Sets this string to hold a representation of the given value. */
     method void setInt(int val) {//Not working
-        var int lstDig; 
-        var char charDig; 
+        var int lstDig, charDig, valAbs;
+
         // a % b = a - (b * int(a/b)) Modulus Math Expression
-        let lstDig = val - (10*(val/10)); //TODO
-        //let charDig = lstDig;
-        /**if(lstDig = 48){let charDig = 48; }
-        if(lstDig = 49){let charDig = 49; }
-        if(lstDig = 50){let charDig = 50; }
-        if(lstDig = 51){let charDig = 51; }
-        if(lstDig = 52){let charDig = 52; }
-        if(lstDig = 53){let charDig = 53; }
-        if(lstDig = 54){let charDig = 54; }
-        if(lstDig = 55){let charDig = 55; }
-        if(lstDig = 56){let charDig = 56; }
-        if(lstDig = 57){let charDig = 57; }*/
-        if (val < 10){
-            do appendChar(lstDig);
+        let lstDig = val - (10*(val/10));
+        if(lstDig < 0){let lstDig = -lstDig; }
+        if(lstDig = 0){let charDig = 48; }
+        if(lstDig = 1){let charDig = 49; }
+        if(lstDig = 2){let charDig = 50; }
+        if(lstDig = 3){let charDig = 51; }
+        if(lstDig = 4){let charDig = 52; }
+        if(lstDig = 5){let charDig = 53; }
+        if(lstDig = 6){let charDig = 54; }
+        if(lstDig = 7){let charDig = 55; }
+        if(lstDig = 8){let charDig = 56; }
+        if(lstDig = 9){let charDig = 57; }
+        if (((val < 10) & (val>0)) | ((val<0) & (val > -10))){
+            while(currentL > 0){do eraseLastChar(); }
+            if(val < 0){do appendChar(45); } 
+            do appendChar(charDig);
             return;
         }
         else{
             do setInt(val/10);
-            do appendChar(lstDig);
+            do appendChar(charDig);
             return;
         }
     }
