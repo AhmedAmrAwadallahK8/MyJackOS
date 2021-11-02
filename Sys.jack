@@ -10,24 +10,19 @@ class Sys {
 
     /** Performs all the initializations required by the OS. */
     function void init() {
-        do Array.init();
-        do Keyboard.init();
-        do Math.init();
-        do Memory.init();
+        do Memory.init();      
         do Output.init();
         do Screen.init();
-        do String.init();
         do Main.main();
+        do Sys.halt();
         return;
     }
 
     /** Halts the program execution. */
     function void halt() {
-        var int stop;
-        let stop = 1;
-        while(stop = 0){
-            let stop = 1;
-        }
+        var boolean stop;
+        let stop = true;
+        while(stop){}
         return;
     }
 
@@ -47,6 +42,7 @@ class Sys {
     function void error(int errorCode) {
         do Output.printString("ERR");
         do Output.printInt(errorCode);
+        do Sys.halt();
         return;
     }
 }
