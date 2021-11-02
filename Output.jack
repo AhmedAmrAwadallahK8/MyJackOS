@@ -186,13 +186,6 @@ class Output {
     function void moveCursor(int i, int j) {
         //Find register containing the pixel
         //let addr = 16384 + (32*y) + (x/16);
-        /**if(cursX < 64){let cursX = j; }
-        else{
-            if(cursY = 22){let cursY = 0; let cursX = 0; }
-            else{let cursX = 0; }
-        }
-        if(cursY < 23){let cursY = i; }
-        else{let cursY = 0; }*/
         let cursX = j;
         let cursY = i;  
         return;
