@@ -61,7 +61,7 @@ class Keyboard {
      * text until a newline character is detected, echoes the text to the screen,
      * and returns its value. Also handles user backspaces.
      */
-    function String readLine(String message) {
+    function String readLine(String message) { //Backspace is removing 2 values not sure why
         var String finalInput;
         var char singleInput;
         var Boolean userDone;
@@ -75,7 +75,7 @@ class Keyboard {
             //Different character entered
             else{
                 //Backspace Entered
-                if(singleInput = 129){do Output.backSpace(); }
+                if(singleInput = 129){do finalInput.eraseLastChar(); }
                 //Different Character Entered
                 else{let finalInput = finalInput.appendChar(singleInput); }
             }
